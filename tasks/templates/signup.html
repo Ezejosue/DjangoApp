@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <h1>Signup</h1>
 <form action="/signup/" method="POST">
     {% csrf_token %}
@@ -10,3 +12,4 @@
         {{ message }}
     </h2>
 </form>
+{% endblock %}
