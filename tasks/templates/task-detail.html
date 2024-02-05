@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Task Detail</h1>
+{{ message }}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button>
+        Update
+    </button>
+
+</form>
+
+<form action="{% url 'completeTask' task.id %}" method="POST">
+    {% csrf_token %}
+    <button>
+        Complete
+    </button>
+</form>
+
+<form action="{% url 'deleteTask' task.id %}" method="POST">
+    {% csrf_token %}
+    <button>
+        Delete
+    </button>
+</form>
+
+{% endblock %}

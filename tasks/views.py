@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
+from .forms import TaskForm
+from .models import Task
+from django.utils import timezone
 
 # Create your views here.
 
@@ -35,7 +37,8 @@ def signup(request):
 
 
 def tasks(request):
-    return render(request, 'task.html')
+    tasks = Task.objects.filter(user=request.user, dateCompleted__isnull=True)
+    return render(request, 'task.html', {'tasks': tasks})
 
 # Logout View
 
@@ -58,3 +61,55 @@ def loginView(request):
         else:
             login(request, user)
             return redirect('task')
+
+# task Create view
+
+
+def task_create(request):
+    if request.method == 'GET':
+        return render(request, 'create-task.html', {'form': TaskForm})
+    else:
+        try:
+            form = TaskForm(request.POST)
+            newTask = form.save(commit=False)
+            newTask.user = request.user
+            newTask.save()
+            return redirect('task')
+        except ValueError:
+            return render(request, 'create-task.html', {'form': TaskForm, 'message': 'Bad data passed in. Try again.'})
+
+# task detail view
+
+
+def task_detail(request, id):
+    if request.method == 'GET':
+        task = get_object_or_404(Task, pk=id, user=request.user)
+        form = TaskForm(instance=task)
+        return render(request, 'task-detail.html', {'task': task, 'form': form})
+    else:
+        try:
+            task = get_object_or_404(Task, pk=id, user=request.user)
+            form = TaskForm(request.POST, instance=task)
+            form.save()
+            return redirect('task')
+        except ValueError:
+            return render(request, 'task-detail.html', {'task': task, 'form': form, 'message': 'Bad info passed in. Try again.'})
+
+# task complete view
+
+
+def task_complete(request, id):
+    task = get_object_or_404(Task, pk=id, user=request.user)
+    if request.method == 'POST':
+        task.dateCompleted = timezone.now()
+        task.save()
+        return redirect('task')
+
+# task delete view
+
+
+def task_delete(request, id):
+    task = get_object_or_404(Task, pk=id, user=request.user)
+    if request.method == 'POST':
+        task.delete()
+        return redirect('task')
