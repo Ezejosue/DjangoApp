@@ -1,5 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Welcome to the Task Manager</h1>
-<p>Use this site to manage your tasks</p>
+
+<div class="container">
+    <h1>Welcome to the Task Manager</h1>
+    <p>Use this site to manage your tasks</p>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>About the Application</h2>
+            <p>The Task Manager is a web application designed to help you organize and track your tasks effectively.
+                Whether you are managing personal tasks or collaborating with a team, this application provides a
+                user-friendly interface to streamline your task management process.</p>
+        </div>
+        <div class="col-md-6">
+            <h2>Key Features</h2>
+            <ul>
+                <li>Create, update, and delete tasks</li>
+                <li>Assign tasks to team members</li>
+                <li>Set due dates and priorities</li>
+                <li>Track task progress and status</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'signup' %}" class="btn btn-secondary">Signup</a>
+        </div>
+    </div>
+</div>
+
+</div>
 {% endblock %}
