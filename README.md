@@ -19,6 +19,7 @@ To begin using this project, follow these steps:
 2. Clone this repository to your local machine.
 3. Review the code and project structure.
 4. Follow the deployment guide in the `deploy.md` file to deploy your application on Render.com.
+5. As an extra, I will also provide a guide `guide.md` for creating and initializing an app with Django.
 
 ## Database Migration
 
